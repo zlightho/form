@@ -14,6 +14,10 @@ def serve_static(path):
     # Для отдачи статики (css, js, иконки и т.д.)
     return send_from_directory('.', path)
 
+@app.route('/download', methods=['GET'])
+def download_csv():
+    return send_file(CSV_FILE, as_attachment=True)
+
 @app.route('/submit', methods=['POST'])
 def submit_form():
     data = request.json
