@@ -18,5 +18,9 @@ def submit_form():
         writer.writerow(data)
     return jsonify({"status": "success"}), 200
 
+@app.route('/download', methods=['GET'])
+def download_csv():
+    return send_file(CSV_FILE, as_attachment=True)
+
 if __name__ == '__main__':
     app.run(debug=True)
