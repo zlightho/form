@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оценка выступления по AI-инструментам</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- ... (сюда вставьте вашу форму, можно взять из текущего index.html) ... -->
+    <script>
+        document.getElementById('feedback-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+            const data = {};
+            formData.forEach((value, key) => {
+                if (key.endsWith('[]')) {
+                    const cleanKey = key.replace('[]', '');
+                    if (!data[cleanKey]) data[cleanKey] = [];
+                    data[cleanKey].push(value);
+                } else {
+                    data[key] = value;
+                }
+            });
+
+            // Замените URL ниже на ваш реальный backend на Render
+            fetch('https://YOUR-BACKEND-URL.onrender.com/submit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.status === "success") {
+                    // Скрываем все секции формы
+                    document.querySelectorAll('.form-section').forEach(section => {
+                        section.classList.add('hidden');
+                    });
+                    document.getElementById('success-message').classList.remove('hidden');
+                } else {
+                    alert("Ошибка при отправке формы. Попробуйте еще раз.");
+                }
+            })
+            .catch(() => {
+                alert("Ошибка соединения с сервером. Проверьте, что сервер запущен.");
+            });
+        });
+    </script>
+</body>
+</html>
