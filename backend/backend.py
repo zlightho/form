@@ -1,19 +1,11 @@
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 import csv
 import os
 
-app = Flask(__name__, static_folder="", static_url_path="")
+app = Flask(__name__)
 CORS(app)
 CSV_FILE = 'submissions.csv'
-
-@app.route('/')
-def serve_index():
-    return send_from_directory('.', 'index.html')
-
-@app.route('/<path:path>')
-def serve_static(path):
-    return send_from_directory('.', path)
 
 @app.route('/submit', methods=['POST'])
 def submit_form():
